@@ -45,7 +45,7 @@ export default {
   name: "TestForm",
   props: {
     title: String,
-    wrongFormat: false,
+    wrongFormat: { type: Boolean, default: false },
     errorMessage: null,
     dataIsLoading: null
   },
