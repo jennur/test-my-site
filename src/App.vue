@@ -10,6 +10,7 @@
       :dataIsLoading="this.dataIsLoading"
     />
     {{this.categoryScores}}
+    {{this.responseError && this.responseError}}
   </div>
 </template>
 
@@ -31,13 +32,14 @@ export default {
       categories: [],
       dataIsLoading: null,
       data: null,
-      categoryScores: {}
+      categoryScores: {},
+      responseError: null
     };
   },
 
   methods: {
     handleUrlInput(inputValue) {
-      let urlCheck = /^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$/;
+      let urlCheck = /^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w.-]+)+[\w\-._~:/?#[\]@!$&'()*+,;=.]+$/;
       if (urlCheck.test(inputValue)) {
         this.inputValue = inputValue;
         this.wrongFormat = false;
@@ -45,7 +47,6 @@ export default {
       } else {
         this.errorMessage = "The URL is not the correct format";
         this.wrongFormat = true;
-        console.log(this.errorMessage);
       }
     },
 
@@ -55,7 +56,6 @@ export default {
       } else {
         this.categories.splice(this.categories.indexOf(inputValue), 1);
       }
-      console.log(this.categories);
     },
 
     handleSubmit(event) {
@@ -70,7 +70,6 @@ export default {
     loadData() {
       this.categoryScores = {};
       this.dataIsLoading = true;
-      let dataLoaded = console.log("DATAISLOADING::: " + this.dataIsLoading);
       let baseURL =
         "https://www.googleapis.com/pagespeedonline/v5/runPagespeed";
 
@@ -79,10 +78,7 @@ export default {
         categories: "&category=" + this.categories.join("&category="),
         apiKey: "&key=AIzaSyB9kaG7GbJ9-dtd14f89CKyyWdknydu7Jg"
       };
-      console.log(parameters);
-      console.log(
-        baseURL + parameters.testUrl + parameters.categories + parameters.apiKey
-      );
+
       // Make API call
       axios
         .get(
@@ -92,17 +88,14 @@ export default {
             parameters.apiKey
         )
         .then(response => {
-          console.log(response);
           // Handle success (with a try/catch error check)
           try {
             if (response.status === 200 && response.data) {
-              console.log("Success: " + response.data.lighthouseResult.audits);
               this.data = response.data;
               let testedCategories = response.data.lighthouseResult.categories;
-              console.log(this.categories);
+
               this.categories.forEach(category => {
                 if (testedCategories.hasOwnProperty(category)) {
-                  console.log(testedCategories);
                   this.categoryScores[category] =
                     testedCategories[category].score;
                 }
@@ -112,19 +105,16 @@ export default {
             }
             // Handle error codes
             else {
-              console.log("Error: " + response);
               this.dataIsLoading = false;
             }
           } catch (err) {
             // Handle error codes
-            console.log("Error: " + err);
             this.dataIsLoading = false;
           }
         })
         .catch(response => {
-          console &&
-            console.log &&
-            console.log("Something went wrong...", response);
+          this.responseError =
+            "Unable to load content, error code " + response.status;
         });
     }
   }
