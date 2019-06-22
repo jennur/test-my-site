@@ -26,14 +26,38 @@ export default {
   },
   data() {
     return {
-      inputValue: null,
-      wrongFormat: false,
-      errorMessage: null,
-      categories: [],
-      dataIsLoading: null,
-      data: null,
-      categoryScores: {},
-      responseError: null
+      inputValue: {
+        type: String,
+        default: ""
+      },
+      wrongFormat: {
+        type: Boolean,
+        default: false
+      },
+      errorMessage: {
+        type: String,
+        default: ""
+      },
+      categories: {
+        type: Array,
+        default: []
+      },
+      dataIsLoading: {
+        type: Boolean,
+        default: null
+      },
+      data: {
+        type: Object,
+        default: {}
+      },
+      categoryScores: {
+        type: Object,
+        default: {}
+      },
+      responseError: {
+        type: String,
+        default: ""
+      }
     };
   },
 
