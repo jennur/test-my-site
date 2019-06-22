@@ -35,7 +35,7 @@
       <input class="form__submit" type="submit" value="Get data">
       <p
         v-bind:class="['form__loading', {'form__loading--active': dataIsLoading}]"
-      >{{dataIsLoading}}</p>
+      >{{dataIsLoading && "Loading"}}</p>
     </form>
   </div>
 </template>

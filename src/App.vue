@@ -9,7 +9,7 @@
       :errorMessage="this.errorMessage"
       :dataIsLoading="this.dataIsLoading"
     />
-    {{this.data ? this.data : null}}
+    {{this.categoryScores}}
   </div>
 </template>
 
@@ -30,9 +30,11 @@ export default {
       errorMessage: null,
       categories: [],
       dataIsLoading: null,
-      data: null
+      data: null,
+      categoryScores: {}
     };
   },
+
   methods: {
     handleUrlInput(inputValue) {
       let urlCheck = /^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$/;
@@ -66,6 +68,7 @@ export default {
     },
 
     loadData() {
+      this.categoryScores = {};
       this.dataIsLoading = true;
       let dataLoaded = console.log("DATAISLOADING::: " + this.dataIsLoading);
       let baseURL =
@@ -88,15 +91,24 @@ export default {
             parameters.categories +
             parameters.apiKey
         )
-        .then(function(response) {
+        .then(response => {
           console.log(response);
           // Handle success (with a try/catch error check)
           try {
             if (response.status === 200 && response.data) {
-              console.log("Success: " + JSON.parse(response.data));
+              console.log("Success: " + response.data.lighthouseResult.audits);
               this.data = response.data;
+              let testedCategories = response.data.lighthouseResult.categories;
+              console.log(this.categories);
+              this.categories.forEach(category => {
+                if (testedCategories.hasOwnProperty(category)) {
+                  console.log(testedCategories);
+                  this.categoryScores[category] =
+                    testedCategories[category].score;
+                }
+              });
+
               this.dataIsLoading = false;
-              console.log("DATA:::: " + this.data);
             }
             // Handle error codes
             else {
@@ -105,11 +117,11 @@ export default {
             }
           } catch (err) {
             // Handle error codes
-            console.log("Error: " + response);
+            console.log("Error: " + err);
             this.dataIsLoading = false;
           }
         })
-        .catch(function(response) {
+        .catch(response => {
           console &&
             console.log &&
             console.log("Something went wrong...", response);
