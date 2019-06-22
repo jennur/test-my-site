@@ -1,0 +1,22 @@
+@import url("https://fonts.googleapis.com/css?family=Righteous&display=swap");
+/* Settings */
+@import "./settings/variables.settings.scss";
+
+/* Components */
+@import "./components/form.scss";
+
+html {
+  background-color: $lightGray;
+}
+#app {
+  font-family: "Righteous", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-align: center;
+  color: $blue;
+  margin-top: 60px;
+}
+
+h1 {
+  font-size: $fontSizeXXLarge;
+}
