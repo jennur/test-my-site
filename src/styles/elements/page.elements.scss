@@ -1,0 +1,16 @@
+html {
+  background-color: $lightGray;
+  color: $orange;
+  font-family: $ubuntu;
+}
+#app {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-align: center;
+  margin-top: 60px;
+}
+
+h1 {
+  font-size: $fontSizeXXLarge;
+  font-family: $righteous;
+}
