@@ -27,7 +27,7 @@
         v-bind:class="['form__url', {'form__url--error': wrongFormat}]"
         type="text"
         v-on:input="updateUrlValue($event)"
-        placeholder="https://your-test-url.com"
+        placeholder="https://your-url.com"
       >
       <p
         v-bind:class="['form__error-message', {'form__error-message--open': errorMessage}]"
@@ -35,7 +35,7 @@
       <input class="form__submit" type="submit" value="Get data">
       <p
         v-bind:class="['form__loading', {'form__loading--active': dataIsLoading}]"
-      >{{dataIsLoading && "Loading"}}</p>
+      >{{dataIsLoading ? "Loading..." : null}}</p>
     </form>
   </div>
 </template>
