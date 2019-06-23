@@ -9,20 +9,22 @@
       :errorMessage="this.errorMessage"
       :dataIsLoading="this.dataIsLoading"
     />
-    {{this.categoryScores}}
+    <Results v-if="this.dataIsLoading === false" :scores="this.categoryScores"/>
     {{this.responseError && this.responseError}}
   </div>
 </template>
 
 <script>
 import TestForm from "./components/TestForm.vue";
+import Results from "./components/Results.vue";
 import "./styles/main.scss";
 import axios from "axios";
 
 export default {
   name: "app",
   components: {
-    TestForm
+    TestForm,
+    Results
   },
   data() {
     return {
@@ -33,19 +35,20 @@ export default {
       dataIsLoading: null,
       data: null,
       categoryScores: {},
-      responseError: null
+      responseError: null,
+      testObj: { test: "testing" }
     };
   },
 
   methods: {
     handleUrlInput(inputValue) {
-      let urlCheck = /^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w.-]+)+[\w\-._~:/?#[\]@!$&'()*+,;=.]+$/;
+      let urlCheck = /^(?:http(s)?:\/\/)[\w.-]+(?:\.[\w.-]+)+[\w\-._~:/?#[\]@!$&'()*+,;=.]+$/;
       if (urlCheck.test(inputValue)) {
         this.inputValue = inputValue;
         this.wrongFormat = false;
         this.errorMessage = null;
       } else {
-        this.errorMessage = "The URL is not the correct format";
+        //this.errorMessage = "The URL is not the correct format";
         this.wrongFormat = true;
       }
     },
@@ -60,15 +63,20 @@ export default {
 
     handleSubmit(event) {
       event.preventDefault();
-      if (this.inputValue && this.categories.length) {
+      if (!this.wrongFormat && this.categories.length > 0) {
+        this.errorMessage = null;
         this.loadData();
       } else {
-        this.errorMessage = "You need to check at least one option";
+        this.errorMessage =
+          this.inputValue !== null
+            ? "You need to check at least one option"
+            : "The URL is not the correct format";
       }
     },
 
     loadData() {
       this.categoryScores = {};
+      this.responseError = null;
       this.dataIsLoading = true;
       let baseURL =
         "https://www.googleapis.com/pagespeedonline/v5/runPagespeed";
@@ -100,7 +108,6 @@ export default {
                     testedCategories[category].score;
                 }
               });
-
               this.dataIsLoading = false;
             }
             // Handle error codes
@@ -112,9 +119,9 @@ export default {
             this.dataIsLoading = false;
           }
         })
-        .catch(response => {
-          this.responseError =
-            "Unable to load content, error code " + response.status;
+        .catch(error => {
+          this.dataIsLoading = false;
+          this.responseError = "Unable to load content. " + error;
         });
     }
   }
