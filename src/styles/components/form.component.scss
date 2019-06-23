@@ -5,20 +5,27 @@
   &__categories {
     display: flex;
     justify-content: space-around;
+    align-items: center;
     width: 100%;
+    color: $darkGray;
   }
 
   &__url {
     width: 100%;
     padding: $spacingSmall;
-    margin: $spacingMedium;
+    margin: $spacingMedium auto;
     background-color: inherit;
+    box-sizing: border-box;
     border: none;
-    border-bottom: 3px solid $blue;
+    border-bottom: 3px solid $orange;
     font-size: $fontSizeMedium;
     text-align: center;
     transition: background-color 0.2s ease-in-out;
+    font-family: $ubuntu;
 
+    &::placeholder {
+      font-family: $ubuntu;
+    }
     &:focus {
       outline: none;
       background-color: $cloud;
@@ -34,6 +41,7 @@
     opacity: 0;
     transition: 0.5s;
     margin: 0px;
+    color: $red;
 
     &--open {
       height: 40px;
@@ -44,17 +52,17 @@
   &__submit {
     height: 48px;
     padding: 0px $spacingLarge;
-    background-color: $blue;
-    color: $cloud;
+    background-color: $orange;
+    color: $lightGray;
     border: none;
     font-size: $fontSizeRoot;
+    font-family: $righteous;
     transition: 0.2s;
     cursor: pointer;
 
     &:hover,
-    &:focus,
-    &:active {
-      color: $blue;
+    &:focus {
+      color: $orange;
       outline: none;
     }
     &:hover {

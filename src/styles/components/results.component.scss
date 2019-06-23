@@ -24,14 +24,14 @@
 
   &__score-bar {
     display: block;
-    background-color: $blue;
+    background-color: $orange;
     height: $spacingSmaller;
     margin-top: 2px;
   }
 
   &__score {
     font-size: $fontSizeXLarge;
-    color: $blue;
+    color: $orange;
     margin-top: $spacingSmall;
   }
 }

@@ -1,19 +1,25 @@
 /* Colors */
-$blue: #291474;
+$orange: #ff9102;
 $red: #c00000;
-$darkGray: #2b2b2b;
-$lightGray: #fffbf0;
+$darkGray: #1b1b1b;
+$lightGray: #fffdf9;
 $cloud: #e9f0ff;
 $thunderCloud: #d2def8;
 
 /* Font sizes */
+$fontSizeSmall: 0.8rem;
 $fontSizeRoot: 16px;
-$fontSizeMedium: 24px;
-$fontSizeLarge: 32px;
-$fontSizeXLarge: 40px;
-$fontSizeXXLarge: 48px;
+$fontSizeMedium: 1.5rem;
+$fontSizeLarge: 2rem;
+$fontSizeXLarge: 2.5rem;
+$fontSizeXXLarge: 3rem;
+
+/* Fonts */
+$ubuntu: "Ubuntu", sans-serif;
+$righteous: "Righteous", sans-serif;
 
 /* Spacing */
+$spacingSmaller: 4px;
 $spacingSmall: 8px;
 $spacingMedium: 16px;
 $spacingLarge: 32px;
