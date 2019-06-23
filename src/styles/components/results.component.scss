@@ -1,0 +1,37 @@
+.results {
+  max-width: 400px;
+  margin: 0 auto;
+
+  &__list-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    width: 100px;
+    height: 90px;
+    font-size: $fontSizeSmall;
+    text-transform: uppercase;
+    color: $darkGray;
+    text-align: center;
+  }
+
+  &__score-bar-wrap {
+    display: block;
+    width: 100%;
+    height: $spacingSmall;
+    background-color: $cloud;
+  }
+
+  &__score-bar {
+    display: block;
+    background-color: $blue;
+    height: $spacingSmaller;
+    margin-top: 2px;
+  }
+
+  &__score {
+    font-size: $fontSizeXLarge;
+    color: $blue;
+    margin-top: $spacingSmall;
+  }
+}
