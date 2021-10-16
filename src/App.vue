@@ -33,19 +33,6 @@ export default {
   },
 
   methods: {
-    handleSubmit(payload) {
-      let url = payload
-      if (!this.wrongFormat && this.categories.length > 0) {
-        this.errorMessage = null;
-        this.loadData();
-      } else {
-        this.errorMessage =
-          this.inputValue !== null
-            ? "You need to check at least one option"
-            : "The URL is not the correct format";
-      }
-    },
-
     loadData(payload) {
       this.categoryScores = {};
       this.responseError = null;
@@ -68,10 +55,9 @@ export default {
           });
           this.dataIsLoading = false;
         })
-        .catch(error => {
+        .catch(() => {
           this.dataIsLoading = false;
-          this.errorMessage = "Unable to load content";
-          console.log("Error:", error)
+          this.responseError = "Unable to load content";
         });
     }
   }
