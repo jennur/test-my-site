@@ -1,17 +1,18 @@
 <template>
   <div>
     <h1>{{ title }}</h1>
-    <form class="form" v-on:submit="submitHandler($event)">
-      <div class="form__categories">
+    <form class="form" @submit="submitHandler($event)">
+      <div class="categories">
         <label for="seo">
-          <input id="seo" type="checkbox" value="seo" v-on:change="updateCategoryValues($event)">SEO
+          <input id="seo" type="checkbox" value="seo" checked @change="updateCategoryValues($event)">SEO
         </label>
         <label for="performance">
           <input
             id="performance"
             type="checkbox"
             value="performance"
-            v-on:change="updateCategoryValues($event)"
+            checked
+            @change="updateCategoryValues($event)"
           >Performance
         </label>
         <label for="accessibility">
@@ -19,22 +20,22 @@
             id="accessibility"
             type="checkbox"
             value="accessibility"
-            v-on:change="updateCategoryValues($event)"
+            checked
+            @change="updateCategoryValues($event)"
           >Accessibility
         </label>
       </div>
       <input
-        v-bind:class="['form__url', {'form__url--error': wrongFormat}]"
+        v-bind:class="['url', {'error': wrongFormat}]"
         type="text"
-        v-on:input="updateUrlValue($event)"
+        @input="updateUrlValue($event)"
         placeholder="https://your-url.com"
       >
-      <p
-        v-bind:class="['form__error-message', {'form__error-message--open': errorMessage}]"
+      <p :class="['error-message', {'open': errorMessage}]"
       >{{ errorMessage }}</p>
-      <input class="form__submit" type="submit" value="Get data">
+      <input class="submit" type="submit" value="Get data" :disabled="!!dataIsLoading">
       <p
-        v-bind:class="['form__loading', {'form__loading--active': dataIsLoading}]"
+        v-bind:class="['loading', {'active': dataIsLoading}]"
       >{{dataIsLoading ? "Loading..." : null}}</p>
     </form>
   </div>
@@ -45,20 +46,58 @@ export default {
   name: "TestForm",
   props: {
     title: String,
-    wrongFormat: { type: Boolean, default: false },
-    errorMessage: null,
     dataIsLoading: null
   },
-
+  data() {
+      return {
+        categories: ["seo", "performance", "accessibility"],
+        errorMessage: null,
+        wrongFormat: false,
+        url: null
+      }
+  },
   methods: {
+    checkUrlFormat(inputValue) {
+      let urlCheck = /^(?:http(s)?:\/\/)[\w.-]+(?:\.[\w.-]+)+[\w\-._~:/?#[\]@!$&'()*+,;=.]+$/
+      return urlCheck.test(inputValue)
+    },
     updateUrlValue(event) {
-      this.$emit("on-input", event.target.value);
+      let url = event.target.value;
+      if(this.checkUrlFormat(url)) {
+        this.url = url;
+        this.errorMessage = null;
+        this.wrongFormat = false;
+      }
+      else if (!url.length) this.errorMessage = "This field cannot be empty";
+      else {
+        this.wrongFormat = true;
+        this.errorMessage = "The URL is not the correct format";
+      }
     },
     updateCategoryValues(event) {
-      this.$emit("on-check", event.target.value);
+      let category = event.target.value;
+
+      if (!this.categories.includes(category)) {
+        this.categories.push(category);
+      } else {
+        this.categories.splice(this.categories.indexOf(category), 1)
+      }
     },
     submitHandler(event) {
-      this.$emit("on-submit", event);
+      event.preventDefault();
+      let categories = this.categories;
+      let url = this.url;
+
+      if (categories.length > 0 && url) {
+        this.errorMessage = null;
+        let baseUrl = "https://www.googleapis.com/pagespeedonline/v5/runPagespeed";
+        let urlParam = "?url=" + this.url;
+        let categoryParams = "&category=" + this.categories.join("&category=")
+        let url = baseUrl + urlParam + categoryParams;
+        this.$emit("submit", {url, categories});
+      } else {
+        this.errorMessage = !url ? "URL cannot be empty" : "You need to check at least one option";
+      }
     }
   }
 };

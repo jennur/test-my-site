@@ -2,15 +2,11 @@
   <div id="app">
     <TestForm
       title="Test your site's"
-      v-on:on-input="handleUrlInput"
-      v-on:on-check="handleCheck"
-      v-on:on-submit="handleSubmit"
-      :wrongFormat="this.wrongFormat"
-      :errorMessage="this.errorMessage"
-      :dataIsLoading="this.dataIsLoading"
+      @submit="loadData"
+      :dataIsLoading="dataIsLoading"
     />
-    <Results v-if="this.dataIsLoading === false" :scores="this.categoryScores"/>
-    {{this.responseError && this.responseError}}
+    <Results v-if="dataIsLoading === false" :scores="categoryScores"/>
+    {{responseError && responseError}}
   </div>
 </template>
 
@@ -28,41 +24,17 @@ export default {
   },
   data() {
     return {
-      inputValue: null,
-      wrongFormat: false,
-      errorMessage: null,
-      categories: [],
       dataIsLoading: null,
       data: null,
       categoryScores: {},
       responseError: null,
       testObj: { test: "testing" }
-    };
+    }
   },
 
   methods: {
-    handleUrlInput(inputValue) {
-      let urlCheck = /^(?:http(s)?:\/\/)[\w.-]+(?:\.[\w.-]+)+[\w\-._~:/?#[\]@!$&'()*+,;=.]+$/;
-      if (urlCheck.test(inputValue)) {
-        this.inputValue = inputValue;
-        this.wrongFormat = false;
-        this.errorMessage = null;
-      } else {
-        //this.errorMessage = "The URL is not the correct format";
-        this.wrongFormat = true;
-      }
-    },
-
-    handleCheck(inputValue) {
-      if (!this.categories.includes(inputValue)) {
-        this.categories.push(inputValue);
-      } else {
-        this.categories.splice(this.categories.indexOf(inputValue), 1);
-      }
-    },
-
-    handleSubmit(event) {
-      event.preventDefault();
+    handleSubmit(payload) {
+      let url = payload
       if (!this.wrongFormat && this.categories.length > 0) {
         this.errorMessage = null;
         this.loadData();
@@ -74,54 +46,32 @@ export default {
       }
     },
 
-    loadData() {
+    loadData(payload) {
       this.categoryScores = {};
       this.responseError = null;
       this.dataIsLoading = true;
-      let baseURL =
-        "https://www.googleapis.com/pagespeedonline/v5/runPagespeed";
-
-      let parameters = {
-        testUrl: "?url=" + this.inputValue,
-        categories: "&category=" + this.categories.join("&category="),
-        apiKey: "&key=AIzaSyB9kaG7GbJ9-dtd14f89CKyyWdknydu7Jg"
-      };
-
+      
+      let url = payload.url;
+      let categories = payload.categories;
       // Make API call
       axios
-        .get(
-          baseURL +
-            parameters.testUrl +
-            parameters.categories +
-            parameters.apiKey
-        )
+        .get(url)
         .then(response => {
-          // Handle success (with a try/catch error check)
-          try {
-            if (response.status === 200 && response.data) {
-              this.data = response.data;
-              let testedCategories = response.data.lighthouseResult.categories;
+          this.data = response.data;
+          let testedCategories = response.data.lighthouseResult.categories;
 
-              this.categories.forEach(category => {
-                if (testedCategories.hasOwnProperty(category)) {
-                  this.categoryScores[category] =
-                    testedCategories[category].score;
-                }
-              });
-              this.dataIsLoading = false;
+          categories.forEach(category => {
+            if (testedCategories.hasOwnProperty(category)) {
+              this.categoryScores[category] =
+                testedCategories[category].score;
             }
-            // Handle error codes
-            else {
-              this.dataIsLoading = false;
-            }
-          } catch (err) {
-            // Handle error codes
-            this.dataIsLoading = false;
-          }
+          });
+          this.dataIsLoading = false;
         })
         .catch(error => {
           this.dataIsLoading = false;
-          this.responseError = "Unable to load content. " + error;
+          this.errorMessage = "Unable to load content";
+          console.log("Error:", error)
         });
     }
   }

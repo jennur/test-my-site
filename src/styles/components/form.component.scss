@@ -2,7 +2,7 @@
   max-width: 400px;
   margin: $spacingLarge auto;
 
-  &__categories {
+  .categories {
     display: flex;
     justify-content: space-around;
     align-items: center;
@@ -10,7 +10,7 @@
     color: $darkGray;
   }
 
-  &__url {
+  .url {
     width: 100%;
     padding: $spacingSmall;
     margin: $spacingMedium auto;
@@ -31,25 +31,25 @@
       background-color: $cloud;
     }
 
-    &--error {
+    &.error {
       border-bottom: 3px solid $red;
     }
   }
 
-  &__error-message {
+  .error-message {
     height: 0px;
     opacity: 0;
     transition: 0.5s;
     margin: 0px;
     color: $red;
 
-    &--open {
+    &.open {
       height: 40px;
       opacity: 1;
       margin: auto;
     }
   }
-  &__submit {
+  .submit {
     height: 48px;
     padding: 0px $spacingLarge;
     background-color: $orange;
