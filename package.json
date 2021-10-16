@@ -4,7 +4,8 @@
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build",
+    "start": "node server.js",
+    "build": "vue-cli-service build --dest server/app/views",
     "lint": "vue-cli-service lint",
     "test:unit": "vue-cli-service test:unit"
   },
@@ -12,7 +13,10 @@
     "axios": "^0.23.0",
     "core-js": "^2.6.5",
     "sinon": "^7.3.2",
-    "vue": "^2.6.10"
+    "vue": "^2.6.10",
+    "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
+    "express": "^4.17.1"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^3.8.0",
