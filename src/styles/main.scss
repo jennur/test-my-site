@@ -1,6 +1,6 @@
 @import url("https://fonts.googleapis.com/css?family=Righteous&display=swap");
 @import url("https://fonts.googleapis.com/css?family=Overpass+Mono|Ubuntu&display=swap");
-
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300&display=swap');
 /* Settings */
 @import "./settings/variables.settings.scss";
 
@@ -9,5 +9,8 @@
 @import "./elements/page.elements.scss";
 
 /* Components */
+@import "./components/audits.component.scss";
 @import "./components/form.component.scss";
 @import "./components/results.component.scss";
+@import "./components/spinner.component.scss";
+@import "./components/tabs.component.scss";

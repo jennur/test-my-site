@@ -1,16 +1,95 @@
 html {
-  background-color: $lightGray;
-  color: $orange;
-  font-family: $ubuntu;
+  background-color: $relaxedRed;
+  color: white;
+  font-family: $bodyFont;
 }
+
 #app {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  margin-top: 60px;
+  max-width: 900px;
+  margin: 60px auto 0px auto;
 }
 
-h1 {
+::selection {
+  background: #b65b5b; /* WebKit/Blink Browsers */
+}
+::-moz-selection {
+  background: #b65b5b; /* Gecko Browsers */
+}
+
+h1.main-title {
   font-size: $fontSizeXXLarge;
-  font-family: $righteous;
+  font-family: $headlineFont;
+  font-weight: 300;
+  text-align: center;
+}
+
+a {
+  color: $brightRed;
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.response-error {
+  text-align: center;
+}
+
+.details {
+  padding: $spacingLarge;
+  background-color: rgba($livelyRed,0.5);
+  color: white;
+  margin-bottom: $spacingMedium;
+  margin-top: $spacingXLarge;
+
+  .url {
+    font-size: $fontSizeLarge;
+  }
+
+  div {
+    margin-bottom: $spacingSmall;
+  }
+}
+
+.grid-content {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+
+  .sidebar{
+    padding-top: $spacingMedium;
+    // display: none;
+    background-color: rgba($livelyRed, 0.5);
+    width: 250px;
+
+
+    // @media screen and (min-width: $desktopWidth) {
+    //   display: block;
+    // }
+
+    .nav {
+      padding: $spacingLarge;
+
+      a { 
+        display: block;
+        color: white;
+        font-size: $fontSizeSmall;
+        text-transform: capitalize;
+        margin-bottom: $spacingMedium;
+      }
+    }
+  } 
+
+  .main-content {
+    background-color: rgba($livelyRed, 0.5);
+    width: 100%;
+    padding-top: $spacingMedium;
+
+    h3:first-child {
+      margin-top: 0px;
+    }
+  }
 }

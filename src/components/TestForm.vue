@@ -1,42 +1,35 @@
 <template>
   <div>
-    <h1>{{ title }}</h1>
     <form class="form" @submit="submitHandler($event)">
       <div class="categories">
-        <label for="seo">
-          <input id="seo" type="checkbox" value="seo" checked @change="updateCategoryValues($event)">SEO
-        </label>
-        <label for="performance">
-          <input
-            id="performance"
-            type="checkbox"
-            value="performance"
-            checked
-            @change="updateCategoryValues($event)"
-          >Performance
-        </label>
-        <label for="accessibility">
-          <input
-            id="accessibility"
-            type="checkbox"
-            value="accessibility"
-            checked
-            @change="updateCategoryValues($event)"
-          >Accessibility
+        <label v-for="category in categories" :key="category.id" :for="category.id">
+          <input  :id="category.id" 
+                  type="checkbox" 
+                  :value="category.id" 
+                  checked 
+                  @change="updateCategoryValues($event)"
+          >{{ category.title }}
         </label>
       </div>
       <input
-        v-bind:class="['url', {'error': wrongFormat}]"
+        :class="['url', {'error': wrongFormat}]"
         type="text"
         @input="updateUrlValue($event)"
         placeholder="https://your-url.com"
       >
       <p :class="['error-message', {'open': errorMessage}]"
       >{{ errorMessage }}</p>
-      <input class="submit" type="submit" value="Get data" :disabled="!!dataIsLoading">
-      <p
-        v-bind:class="['loading', {'active': dataIsLoading}]"
-      >{{dataIsLoading ? "Loading..." : null}}</p>
+      <input  class="submit" 
+              type="submit" 
+              value="Get data" 
+              :class="{'disabled': dataIsLoading}" 
+              :disabled="dataIsLoading"
+      />
+      <div v-if="dataIsLoading" class="loading">
+        <div class="lds-grid">
+          <div v-for="index in 9" :key="index"></div>
+        </div>Loading...
+      </div>
     </form>
   </div>
 </template>
@@ -45,21 +38,22 @@
 export default {
   name: "TestForm",
   props: {
-    title: String,
-    dataIsLoading: null
+    dataIsLoading: Boolean,
+    categories: Array
   },
   data() {
-      return {
-        categories: ["seo", "performance", "accessibility"],
-        errorMessage: null,
-        wrongFormat: false,
-        url: null
-      }
+    let selectedCategories = this.categories.map(category => category.id);
+    return {
+      selectedCategories,
+      errorMessage: null,
+      wrongFormat: false,
+      url: null
+    }
   },
   methods: {
     checkUrlFormat(inputValue) {
       let urlCheck = /^(?:http(s)?:\/\/)[\w.-]+(?:\.[\w.-]+)+[\w\-._~:/?#[\]@!$&'()*+,;=.]+$/
-      return urlCheck.test(inputValue)
+      return urlCheck.test(inputValue.toLowerCase())
     },
     updateUrlValue(event) {
       let url = event.target.value;
@@ -77,24 +71,20 @@ export default {
     updateCategoryValues(event) {
       let category = event.target.value;
 
-      if (!this.categories.includes(category)) {
-        this.categories.push(category);
+      if (!this.selectedCategories.includes(category)) {
+        this.selectedCategories.push(category);
       } else {
-        this.categories.splice(this.categories.indexOf(category), 1)
+        this.selectedCategories.splice(this.selectedCategories.indexOf(category), 1)
       }
     },
     submitHandler(event) {
       event.preventDefault();
-      let categories = this.categories;
+      let categories = this.selectedCategories;
       let url = this.url;
 
       if (categories.length > 0 && url) {
         this.errorMessage = null;
-        let baseUrl = "https://www.googleapis.com/pagespeedonline/v5/runPagespeed";
-        let urlParam = "?url=" + this.url;
-        let categoryParams = "&category=" + this.categories.join("&category=")
-        let url = baseUrl + urlParam + categoryParams;
-        this.$emit("submit", {url, categories});
+        this.$emit("submit", { url, categories });
       } else {
         this.errorMessage = !url ? "URL cannot be empty" : "You need to check at least one option";
       }

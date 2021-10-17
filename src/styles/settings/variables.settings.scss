@@ -1,4 +1,8 @@
 /* Colors */
+$relaxedRed: #4B2627;
+$livelyRed: #682a36;
+$brightRed: #FF6D79;
+$fogBlue: #4E6E94;
 $orange: #ff9102;
 $red: #c00000;
 $darkGray: #1b1b1b;
@@ -15,11 +19,19 @@ $fontSizeXLarge: 2.5rem;
 $fontSizeXXLarge: 3rem;
 
 /* Fonts */
-$ubuntu: "Ubuntu", sans-serif;
-$righteous: "Righteous", sans-serif;
+$headlineFont: 'Poppins', sans-serif;
+$bodyFont: "ubuntu", sans-serif;
+$buttonFont: 'Poppins', sans-serif;
 
 /* Spacing */
 $spacingSmaller: 4px;
 $spacingSmall: 8px;
 $spacingMedium: 16px;
 $spacingLarge: 32px;
+$spacingXLarge: 40px;
+
+
+/* Screen sizes */
+$mobileWidth: 600px;
+$tabletWith: 900px;
+$desktopWidth: 1300px;

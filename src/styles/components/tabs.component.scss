@@ -1,0 +1,36 @@
+
+.tabs {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+
+    button.tab {
+        font-size: $fontSizeMedium;
+        flex-basis: 33.33%;
+        cursor: pointer;
+        padding: $spacingMedium 0px;
+        text-align: center;
+        background-color: transparent;
+        border: none;
+        outline: none;
+        color: white;
+        background-color: rgba($livelyRed, 0.2);
+
+
+        &.active {
+            background-color: rgba($livelyRed, 0.5);
+        }
+
+        &:hover {
+            background-color: rgba($livelyRed, 0.3);
+        }
+
+        &:not(:first-child):not(:last-child) {
+            border-right: 2px solid $relaxedRed;
+            border-left: 2px solid $relaxedRed;
+        }
+    }
+}
